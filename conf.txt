@@ -1,0 +1,13 @@
+npm i typescript
+
+//crear archivo de configuración typescript
+npx tsc --init
+
+//compilar
+npx tsc
+
+//depe
+npm i express mongoose  morgan rimraf
+
+//depe tsc
+npm i @types/express -D 
