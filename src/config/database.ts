@@ -15,7 +15,8 @@ mongoose.connect( connection, {
     authSource: DBDEFAULT ,
     useNewUrlParser     : true ,
     useUnifiedTopology  : true ,
-    useCreateIndex      : true
+    useCreateIndex      : true ,
+    useFindAndModify    : true
 })
 .then( db => console.log('Db is connected'))
 .catch( err => console.log(err)) ;

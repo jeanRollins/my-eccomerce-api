@@ -17,6 +17,6 @@ const categorySchema = new Schema({
         unique : true ,
         required : true 
     }
-})
+});
 
 export default model<ICategory>( 'Category' , categorySchema ) ;

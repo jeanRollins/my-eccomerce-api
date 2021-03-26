@@ -2,16 +2,18 @@ import  {Schema, model, Document} from 'mongoose' ;
 
 
 export interface IProduct extends Document {
-    name         : string ;
-    normal_price : number ;
-    offer_price  : number ;
-    slug         : string ;
-    categories   : Array<number> ;
-    stock        : number ;
-    created      : Date   ;
+    name        : string ;
+    normalPrice : number ;
+    offerPrice  : number ;
+    slug        : string ;
+    categories  : Array<string> ;
+    stock       : number ;
+    createdAt   : Date   ;
+    updateAt    : Date   ;
 } ;
 
 const productSchema = new Schema({
+
     name : {
         type     : String ,
         unique   : true ,
@@ -37,7 +39,10 @@ const productSchema = new Schema({
         type     : Number ,        
         default  : 0
     },
-    created : {
+    createdAt : {
+        type : Date 
+    },
+    updateAt : {
         type : Date ,
         default : Date.now() 
     }

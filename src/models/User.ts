@@ -1,20 +1,38 @@
 import  {Schema, model, Document} from 'mongoose' ;
 import bcrypt from 'bcryptjs' ;
+import { generateMailVerification } from '../libs/Commons';
 
 export interface IUser extends Document {
-    username : string  ;
-    email    : string  ;
-    password : string  ;
+    names           : string  ;
+    surname         : string  ;
+    secondSurname   : string  ;
+    email           : string  ;
+    password        : string  ;
+    status          : number  ;
+    tokenRecovery   : string  ;
+    lastConnected   : Date  ;
+    createdAt       : Date  ;
     encryptPassword( password: string ) : Promise <string> ;
     validatePassword( password1 : string , password2 : string ) : Promise <boolean> ;
 } ;
 
 const userSchema  = new Schema({
-    username: {
+    names : {
         type : String ,
+        unique : true ,
+        required : true , 
+        min : 2 
+    },
+    surname : {
+        type : String ,
+        unique : true ,
         required : true ,
-        min : 4 ,
-        lowercase: true
+        min : 2 
+    },
+    secondSurname : {
+        type : String ,
+        unique : true ,
+        required : true 
     },
     email : {
         type : String ,
@@ -24,7 +42,24 @@ const userSchema  = new Schema({
     },
     password : {
         type : String ,
-        required : true 
+        required : true ,
+        min : 6
+    },
+    status : {
+        type : Number ,
+        default : 0
+    },
+    tokenRecovery : {
+        type : String ,
+        default : generateMailVerification()
+    },
+    lastConnected : {
+        type : Date,
+        default : Date.now()
+    },
+    createdAt : {
+        type : Date,
+        default : Date.now()
     }
 });
 

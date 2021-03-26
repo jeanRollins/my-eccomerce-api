@@ -1,5 +1,5 @@
 import { Router } from 'express' ;
-import { add } from '../controllers/ProductController';
+import { add, edit, getAll, remove } from '../controllers/ProductController';
 import { ValidateToken } from '../libs/Token';
 
 
@@ -7,6 +7,11 @@ const routerProduct: Router = Router() ;
 
 routerProduct.post('/product/add' , ValidateToken, add ) ;
 
-routerProduct.get('/product/version', () => console.log('version 1.0***') ) ;
+routerProduct.post('/product/remove', remove ) ;
+
+routerProduct.post('/product/edit', edit ) ;
+
+routerProduct.get('/product/getAll' , ValidateToken, getAll ) ;
+
 
 export default routerProduct ;
