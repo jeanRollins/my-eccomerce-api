@@ -1,6 +1,8 @@
 import express, { Application } from 'express' ;
 import routes from './routes/Login' ;
 import routerProduct from './routes/Product' ;
+import routerCategory from './routes/Category' ;
+
 
 import cors from 'cors' ;
 
@@ -13,8 +15,10 @@ app.set( 'port' , port ) ;
 
 app.use( express.json() );
 
-app.use( '/api/', routerProduct ) ;
+app.use( '/api/back/', routerProduct ) ;
+app.use( '/api/back/', routerCategory ) ;
 
-app.use( '/api/',routes ) ;
+
+app.use( '/api/back/',routes ) ;
 
 export default app ;

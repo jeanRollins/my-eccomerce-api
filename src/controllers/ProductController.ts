@@ -1,19 +1,40 @@
 import {Request,  Response} from 'express' ;
-import Product, { IProduct } from '../models/Product';
+import { deleteFile } from '../libs/FileLoad';
+import IFile  from '../interfaces/IFile';
+import File  from '../models/File';
+
+import Product , { IProduct } from '../models/Product';
+
 
 export const add =  async ( req : Request  , res : Response  ) => {
 
-    let { name , normalPrice, offerPrice, slug, categories, stock } = req.body ;
+    req.body.files = req.files ;
+    let { name , normalPrice, offerPrice, slug, categories, stock, description, technicalInformation, files } = req.body ;
 
-   
-    try{
+    const filesSaved : Array<IFile> = [] ;
+    
+    try {
         if( name == undefined || name == '' ){
             res.status(400).send({ action : false , message : 'Name required' }) ;
+            deleteFile( req.files ) ;
             return ;
         }
     
         if( normalPrice == undefined || normalPrice == '' ){
             res.status(400).send({ action : false , message : 'Normal price required' }) ;
+            deleteFile( req.files ) ;
+            return ;
+        }
+
+        if( description == undefined || description == '' ){
+            res.status(400).send({ action : false , message : 'Description price required' }) ;
+            deleteFile( req.files ) ;
+            return ;
+        }
+
+        if( technicalInformation == undefined || technicalInformation == '' ){
+            res.status(400).send({ action : false , message : 'Technical information price required' }) ;
+            deleteFile( req.files ) ;
             return ;
         }
     
@@ -22,6 +43,7 @@ export const add =  async ( req : Request  , res : Response  ) => {
     
         if( slug == undefined || slug == '' ){
             res.status(400).send({ action : false , message : 'Slug required' }) ;
+            deleteFile( req.files ) ;
             return ;
         }
     
@@ -36,7 +58,10 @@ export const add =  async ( req : Request  , res : Response  ) => {
             slug ,
             categories ,
             stock ,
-            createdAt : new Date 
+            technicalInformation ,
+            description ,
+            createdAt : new Date , 
+            updateAt  : new Date 
         }) ;
     
         const productSaved = await product.save() ;
@@ -107,11 +132,6 @@ export const edit =  async ( req : Request  , res : Response  ) => {
             categories  ,
             stock       
          } ;
-
-        console.log( 'id***' , id ) ;
-        console.log( 'product***' , product ) ;
-
-
 
         const responseUpd = await Product.findByIdAndUpdate( id , product ); 
 

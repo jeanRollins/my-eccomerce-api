@@ -7,6 +7,8 @@ export interface IProduct extends Document {
     offerPrice  : number ;
     slug        : string ;
     categories  : Array<string> ;
+    technicalInformation : string ;
+    description : string ;
     stock       : number ;
     createdAt   : Date   ;
     updateAt    : Date   ;
@@ -17,11 +19,11 @@ const productSchema = new Schema({
     name : {
         type     : String ,
         unique   : true ,
-        required : true ,
+        required : true 
     },
     normalPrice : {
         type     : Number ,
-        required : true ,
+        required : true 
     },
     offerPrice : {
         type     : Number 
@@ -35,18 +37,30 @@ const productSchema = new Schema({
         type     : Schema.Types.ObjectId, ref : 'Category' ,
         required : true 
     },
+    files : {
+        type     : Schema.Types.ObjectId, ref : 'File' ,
+        required : true 
+    },
+    technicalInformation : {
+        type     : String ,
+        required : true
+    },
+    description : {
+        type     : String ,
+        required : true
+    },
     stock : {
-        type     : Number ,        
+        type     : Number , 
         default  : 0
     },
     createdAt : {
-        type : Date 
+        type : Date ,
+        default : Date.now() 
     },
     updateAt : {
         type : Date ,
         default : Date.now() 
     }
-
 }) ;
 
 export default model<IProduct>( 'Product' , productSchema ) ;

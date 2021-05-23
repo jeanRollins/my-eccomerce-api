@@ -10,6 +10,7 @@ export interface IUser extends Document {
     password        : string  ;
     status          : number  ;
     tokenRecovery   : string  ;
+    token           : string  ;
     lastConnected   : Date  ;
     createdAt       : Date  ;
     encryptPassword( password: string ) : Promise <string> ;
@@ -19,19 +20,16 @@ export interface IUser extends Document {
 const userSchema  = new Schema({
     names : {
         type : String ,
-        unique : true ,
         required : true , 
         min : 2 
     },
     surname : {
         type : String ,
-        unique : true ,
         required : true ,
         min : 2 
     },
     secondSurname : {
         type : String ,
-        unique : true ,
         required : true 
     },
     email : {
@@ -52,6 +50,10 @@ const userSchema  = new Schema({
     tokenRecovery : {
         type : String ,
         default : generateMailVerification()
+    },
+    token : {
+        type : String,
+        default : ''
     },
     lastConnected : {
         type : Date,

@@ -4,6 +4,7 @@ import  {Schema, model, Document} from 'mongoose' ;
 export interface ICategory extends Document {
     name : string  ;
     slug : string ;
+    parent : string ;
 } ;
 
 const categorySchema = new Schema({
@@ -15,6 +16,10 @@ const categorySchema = new Schema({
     slug : {
         type : String ,
         unique : true ,
+        required : true 
+    },
+    parent : {
+        type : String ,
         required : true 
     }
 });

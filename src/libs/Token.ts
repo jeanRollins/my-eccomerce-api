@@ -29,3 +29,19 @@ export const ValidateToken =  ( req: Request , res: Response, next: NextFunction
 
     
 }
+
+export const ValidateSession =  ( token : string ): boolean =>  {
+ 
+    try {
+       
+        if( !token ) return false ;
+        
+        const payload : IPayload = jwt.verify( token , process.env.TOKEN || 'jean' ) as IPayload ;
+
+        return ( payload._id !== undefined )  ; 
+    } 
+    catch (error) {
+        return false ;    
+    }
+    
+}
