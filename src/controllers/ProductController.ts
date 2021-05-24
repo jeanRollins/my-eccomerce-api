@@ -1,75 +1,57 @@
 import {Request,  Response} from 'express' ;
-import { deleteFile } from '../libs/FileLoad';
-import IFile  from '../interfaces/IFile';
-import File  from '../models/File';
+import { deleteFile } from '../libs/FileLoad' ;
 
-import Product , { IProduct } from '../models/Product';
+import { Products } from '../libs/Products' ;
+import Product from '../models/Product' ;
+
 
 
 export const add =  async ( req : Request  , res : Response  ) => {
 
     req.body.files = req.files ;
-    let { name , normalPrice, offerPrice, slug, categories, stock, description, technicalInformation, files } = req.body ;
+    let { name , code, sku, categories, description, technicalInformation, files } = req.body ;
 
-    const filesSaved : Array<IFile> = [] ;
-    
     try {
         if( name == undefined || name == '' ){
-            res.status(400).send({ action : false , message : 'Name required' }) ;
+            res.status(203).send({ action : false , message : 'Name required' }) ;
             deleteFile( req.files ) ;
             return ;
         }
-    
-        if( normalPrice == undefined || normalPrice == '' ){
-            res.status(400).send({ action : false , message : 'Normal price required' }) ;
+
+        if( code == undefined || code == '' ){
+            res.status(203).send({ action : false , message : 'Code required' }) ;
+            deleteFile( req.files ) ;
+            return ;
+        }
+
+        if( sku == undefined || sku == '' ){
+            res.status(203).send({ action : false , message : 'SKU required' }) ;
             deleteFile( req.files ) ;
             return ;
         }
 
         if( description == undefined || description == '' ){
-            res.status(400).send({ action : false , message : 'Description price required' }) ;
+            res.status(203).send({ action : false , message : 'Description price required' }) ;
             deleteFile( req.files ) ;
             return ;
         }
 
         if( technicalInformation == undefined || technicalInformation == '' ){
-            res.status(400).send({ action : false , message : 'Technical information price required' }) ;
+            res.status(203).send({ action : false , message : 'Technical information price required' }) ;
             deleteFile( req.files ) ;
             return ;
         }
-    
-        if( offerPrice == undefined || offerPrice == '' ) offerPrice = 0 ;
-    
-    
-        if( slug == undefined || slug == '' ){
-            res.status(400).send({ action : false , message : 'Slug required' }) ;
-            deleteFile( req.files ) ;
-            return ;
-        }
-    
+
         if( categories == undefined || !Array.isArray( categories ) ) categories = [] ;
     
-        if( stock == undefined || stock === false ) stock = 0 ;
-    
-        const product : IProduct = new Product({
-            name ,
-            normalPrice ,
-            offerPrice ,
-            slug ,
-            categories ,
-            stock ,
-            technicalInformation ,
-            description ,
-            createdAt : new Date , 
-            updateAt  : new Date 
-        }) ;
-    
-        const productSaved = await product.save() ;
-    
-        res.status(200).send( {  action : true , messagge : 'ok' , data : productSaved } ) ;
+        const product = new Products() ;
+        
+        const productSaved = await product.add( req.body , files ) ;
+        
+        res.status(200).send( { action : true, messagge : 'ok', data : productSaved } ) ;
     }
     catch( error ){
-        res.status(400).send( {  action : false , messagge : error , data : [] } ) ;
+        res.status(203).send( { action : false , messagge : error , data : [] } ) ;
     }
 
 } 
@@ -78,7 +60,7 @@ export const remove = async ( req : Request  , res : Response ) => {
         
     const { id } = req.body ;
 
-    try{
+    try {
         if( id == undefined || id == '' ){
             res.status(400).send({ action : false , message : 'Id required' }) ;
             return ;

@@ -9,8 +9,18 @@ export const generateString = function( stringlength : number ): string {
 	return randomstring;
 }
 
-
-export const generateMailVerification = function() : string {
+export const generateMailVerification = () : string => {
     return 'MAIL_' + generateString( 50 ) ;
+} 
+
+export const generateSlug = ( title : string ) : string => {
+	title = title.split(' ').join('-') ;
+	title = removeAccents( title ) ; 
+	title = title.toLowerCase() ;
+	return title ;
+}
+
+export const removeAccents = ( str : string ) : string => {
+	return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 } 
     

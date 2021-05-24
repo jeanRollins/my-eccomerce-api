@@ -1,7 +1,7 @@
-import { uuid } from "uuidv4";
+import { v4 as uuid } from 'uuid';
 import multer   from "multer";
 import path     from "path";
-import fs from 'fs' ;
+import fs       from 'fs' ;
 
 const filesystem = fs.promises ;
 
@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     destination: ( req, file, cb ) : void => cb( null , PATH_IMAGES_PRODUCT ),
 
     filename    : ( req, file, cb ) : void  => {
-        cb( null, uuid() + path.extname( file.originalname )  )
+        cb( null, uuid() + path.extname( file.originalname )  ) ;
     }
 }) ;
 
