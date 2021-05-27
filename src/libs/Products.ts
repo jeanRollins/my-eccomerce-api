@@ -8,10 +8,13 @@ import { generateSlug } from './Commons';
 
 export class Products {
     
-    private _id : string = '' ; 
+    private _id  : string = '' ; 
+    private code : string = '' ; 
 
-    constructor( id : string = '' ) {
-        this._id = id ;
+
+    constructor( id : string = '' , code : string = '' ) {
+        this._id  = id ;
+        this.code = code ;
     } ;
 
     public async add ( p : any, files : any ){
@@ -41,7 +44,7 @@ export class Products {
 
         const product : IProduct = new Product({
             name        : p.name ,
-            code        : p.code ,
+            code        : 'COD' + p.code ,
             sku         : p.sku  ,
             normalPrice : 0 ,
             offerPrice  : 0 ,
@@ -59,5 +62,25 @@ export class Products {
         const productSaved = await product.save() ;
         return productSaved ;
     }
+
+    public async getByCod(){
+
+        const product : IProduct[] = await Product.aggregate([
+            { 
+                $match : { code : this.code } 
+            },
+            {
+                $lookup : {
+                    from : "files" ,
+                    localField : "files" ,
+                    foreignField : "_id" ,
+                    as : "ProductFiles"
+                }    
+            }
+            
+        ]) ;
+
+        return product ;
+    } 
 
 }

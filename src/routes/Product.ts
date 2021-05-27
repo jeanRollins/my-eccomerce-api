@@ -1,6 +1,6 @@
 import { Router } from 'express' ;
 import FileLoad from '../libs/FileLoad';
-import { add, edit, getAll, remove } from '../controllers/ProductController';
+import { add, edit, get, getAll, remove } from '../controllers/ProductController';
 import { ValidateToken } from '../libs/Token';
 
 
@@ -12,7 +12,7 @@ routerProduct.post('/product/remove', remove ) ;
 
 routerProduct.post('/product/edit', edit ) ;
 
-//routerProduct.post('/product/test'  , test ) ;
+routerProduct.get( '/product/get/:code' , get ) ;
 
 routerProduct.get('/product/getAll', getAll ) ;
 

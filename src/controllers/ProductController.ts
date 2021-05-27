@@ -1,4 +1,5 @@
 import {Request,  Response} from 'express' ;
+import IProduct from '../interfaces/IProduct';
 import { deleteFile } from '../libs/FileLoad' ;
 
 import { Products } from '../libs/Products' ;
@@ -143,4 +144,31 @@ export const getAll = async ( req : Request  , res : Response  ) => {
     }
     
     
+}
+
+
+export const get = async ( req : Request  , res : Response ) => {
+
+    const code : string = req.params.code ;
+
+    const product : Products = new Products( '' , code ) ; 
+
+    const productFounded : IProduct [] = await product.getByCod() ;
+
+
+    console.log('code :: ' , code ) ;
+
+    console.log('productFounded :: ' , productFounded ) ;
+
+    
+
+    try {
+
+    
+        
+        res.status(200).send( {  action : true , messagge : 'ok' , data : productFounded } ) ;
+        
+    } catch (error) {
+        res.status(400).send( {  action : false , messagge : error , data : [] } ) ;
+    }
 }
