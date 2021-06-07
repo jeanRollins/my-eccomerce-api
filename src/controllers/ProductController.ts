@@ -12,6 +12,8 @@ export const add =  async ( req : Request  , res : Response  ) => {
     req.body.files = req.files ;
     let { name , code, sku, categories, description, technicalInformation, files } = req.body ;
 
+    console.log('req.files :::: ', req.files);
+    
     try {
         if( name == undefined || name == '' ){
             res.status(203).send({ action : false , message : 'Name required' }) ;
@@ -155,20 +157,22 @@ export const get = async ( req : Request  , res : Response ) => {
 
     const productFounded : IProduct [] = await product.getByCod() ;
 
-
-    console.log('code :: ' , code ) ;
-
-    console.log('productFounded :: ' , productFounded ) ;
-
-    
-
-    try {
-
-    
-        
-        res.status(200).send( {  action : true , messagge : 'ok' , data : productFounded } ) ;
+    try {    
+        res.status(200).send( 
+            {  
+                action : true   , 
+                messagge : 'ok' , 
+                data : productFounded 
+            } 
+        ) ;
         
     } catch (error) {
-        res.status(400).send( {  action : false , messagge : error , data : [] } ) ;
+        res.status(400).send( 
+            {  
+                action : false , 
+                messagge : error , 
+                data : {} 
+            }
+        ) ;
     }
 }

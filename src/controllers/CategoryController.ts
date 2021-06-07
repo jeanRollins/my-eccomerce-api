@@ -1,10 +1,9 @@
 import {Request,  Response} from 'express' ;
 import { Categories } from '../libs/Categories';
-import Category, { ICategory } from '../models/Category';
-
+import { ICategory } from '../models/Category';
 
 export const getCategories = async ( req: Request, res: Response )  =>  {
-    
+        
     try {
         const categories : ICategory []  = await Categories.getAll()  ;
         

@@ -3,8 +3,8 @@ import { getCategories } from '../controllers/CategoryController';
 import { ValidateToken } from '../libs/Token';
 
 
-const routerCategory: Router = Router() ;
+const CategoryRoutes: Router = Router() ;
 
-routerCategory.get('/category/get' , getCategories ) ;
+CategoryRoutes.get('/category/get' , getCategories ) ;
 
-export default routerCategory ;
+export default CategoryRoutes ;

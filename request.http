@@ -1,0 +1,33 @@
+@RUTE_API = http://localhost:3000 
+### START Products
+
+GET {{ RUTE_API }}/api/back/product/get/COD000003
+
+GET {{ RUTE_API }}/api/back/product/get/COD000002
+
+GET {{ RUTE_API }}/api/back/product/get/COD000001
+
+### END Products
+
+
+### START TEST
+POST {{ RUTE_API }}/api/back/file/remove
+Content-Type: application/json
+
+{
+    "idFile" : "60bcffe6ee51601daf2461e2" ,
+    "code" : "COD000003"
+}
+
+###  END TEST
+
+
+
+### START TEST
+POST https://jsonplaceholder.typicode.com/posts
+Content-Type: application/json
+
+{
+    "data" : 1
+}
+### END TEST 

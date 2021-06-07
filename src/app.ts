@@ -1,24 +1,24 @@
 import express, { Application } from 'express' ;
-import routes from './routes/Login' ;
-import routerProduct from './routes/Product' ;
-import routerCategory from './routes/Category' ;
 
+import FileRoutes from './routes/FileRoutes' ;
+import LoginRoutes from './routes/LoginRoutes' ;
+import ProductRoutes from './routes/ProductRoutes' ;
+import CategoryRoutes from './routes/CategoryRoutes' ;
 
 import cors from 'cors' ;
 
 const app: Application = express() ;
 const port :number = 3000 ;
-//settings
 
-app.use( cors() )
+app.use( '/static' , express.static( __dirname + '/static' ) ) ;
+app.use( cors() ) ;
 app.set( 'port' , port ) ;
 
 app.use( express.json() );
 
-app.use( '/api/back/', routerProduct ) ;
-app.use( '/api/back/', routerCategory ) ;
-
-
-app.use( '/api/back/',routes ) ;
+app.use( '/api/back/' , LoginRoutes ) ;
+app.use( '/api/back/' , ProductRoutes ) ;
+app.use( '/api/back/' , CategoryRoutes ) ;
+app.use( '/api/back/' , FileRoutes ) ;
 
 export default app ;

@@ -1,13 +1,6 @@
 import Category  , { ICategory } from "../models/Category";
 
 
-interface categoryToSaved {
-    id : string ;
-    name : string ;
-    type : string ;
-    data : Array<any> ;
-
-}
 export class Categories {
 
     private _id : string = '' ;

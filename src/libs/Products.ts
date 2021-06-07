@@ -5,6 +5,7 @@ import File   from '../models/File';
 import Product   from '../models/Product';
 import IProduct  from '../interfaces/IProduct';
 import { generateSlug } from './Commons';
+import { ICategory } from '../models/Category';
 
 export class Products {
     
@@ -63,24 +64,86 @@ export class Products {
         return productSaved ;
     }
 
-    public async getByCod(){
+    public async getByCod()  : Promise<any[]>  {
 
-        const product : IProduct[] = await Product.aggregate([
+        const products : IProduct[] = await Product.aggregate([
             { 
                 $match : { code : this.code } 
             },
             {
                 $lookup : {
-                    from : "files" ,
-                    localField : "files" ,
+                    from : "categories" ,
+                    localField : "categories" ,
                     foreignField : "_id" ,
-                    as : "ProductFiles"
+                    as : "categories"
                 }    
+            },
+            { 
+                $unwind : "$categories" 
             }
-            
         ]) ;
 
-        return product ;
+        const _products : Array<string> = products[0].files.map( f => f.toString() ) ;
+        
+        const files : IFile[] = await File.find({ 
+            _id : {  
+                $in : _products
+            } 
+        }) ;
+        
+        const dataWithFiles = await this.ordersData( products , files ) ;
+        return dataWithFiles ;
     } 
+
+    public async ordersData( data : Array<any> , files : Array<any> ) : Promise<any> {
+
+        if( data.length === 0 ) return {} ;
+
+        let product : IProduct = await data[0] ;
+
+        product.categories  = data.map( c => c.categories ) 
+        product.files       = files ;
+
+        return product ;
+    }
+
+    public async pushField( 
+        field           : string, 
+        values          : Array<string>, 
+        valueIdentifier : string, 
+        identifier      : string = '_id' ) : Promise< Array<any> >   {
+
+        let productsSaved : Array<any> = [] ; 
+
+        for await ( const f of values ){
+            const productSaved = await Product.updateOne(
+                { 
+                    [ identifier ] : valueIdentifier 
+                },
+                {
+                    $push : {
+                        [ field ] : f
+                    }
+                }
+            )
+            productsSaved.push( productSaved ) ;
+        }
+        return productsSaved ;
+    } 
+
+    public async pullField( field : string, value : string, valueIdentifier : string, identifier : string = '_id' ) {
+        
+        const productSaved = await Product.updateOne(
+            { 
+                [ identifier ] : valueIdentifier 
+            },
+            { 
+                $pull : { 
+                    [ field ] : value 
+                } 
+            }
+        ) ;
+        return productSaved ;
+    }
 
 }
