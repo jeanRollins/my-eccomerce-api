@@ -1,5 +1,8 @@
 import Category  , { ICategory } from "../models/Category";
-
+import { Commons } from "./Commons";
+import ObjectID from "bson-objectid";
+import Product from "../models/Product";
+import IProduct from "../interfaces/IProduct";
 
 export class Categories {
 
@@ -10,6 +13,7 @@ export class Categories {
     }
 
     static async getAll( parent : string = '' )  {
+
         
         const categories : ICategory [] =  await Category.find({ parent })  ; 
         
@@ -32,5 +36,43 @@ export class Categories {
         return nodeCategories ;
     }
 
+    public async add( name : string, parent : string ) : Promise<ICategory> {
+
+        const slug : string = await Commons.generateSlug( name ) ;
+
+        const category : ICategory = new Category({
+            name ,
+            slug ,
+            parent
+        }) ;
+
+        const categorySaved : ICategory = await category.save() ;
+        return categorySaved ;
+    } 
+ 
+    public async remove( field : string ) : Promise<ICategory>  {
+
+        const categoryRemoved : any = await Category.deleteOne( { [ field ] : this._id } ) ;
+      
+        return categoryRemoved ;
+    }
+
+    public async existInProducts( ) : Promise<boolean> {
+        
+        const objectValid : boolean = ObjectID.isValid( this._id ) ;
+
+        if( !objectValid ) return false ;
+
+        const id : any = new ObjectID( this._id ) ;
+        
+        const productsFounded : Array<IProduct> = await Product.find({             
+            
+            categories : {
+                $in : [ id ]
+            }  
+        }) ;
+
+        return  ( productsFounded.length > 0 ) ;
+    }
 
 }

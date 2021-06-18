@@ -36,7 +36,6 @@ export class Files {
     public async remove( field : string, value : string, url : string = '') {
 
         const fileRemove : any = await File.deleteOne( { [ field ] : [ value ] } ) ;
-        
         const pathToDelete : Array<any> = [{ path : `dist/static/uploads/products/${ url }` }] ;
 
         deleteFile( pathToDelete ) ;

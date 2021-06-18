@@ -53,7 +53,6 @@ export const removeItem =  async ( req : Request, res : Response ) => {
             res.status(203).send( { action : false, messagge : 'path required', data : [] } ) ;
             return false ;
         }
-
         const file    = new Files() ;
         const product = new Products() ;
         
