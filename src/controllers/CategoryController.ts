@@ -68,4 +68,6 @@ export const remove = async ( req: Request, res: Response  ) => {
     catch( error ) {
         res.status(400).send( { action : false, message : error , data: [] } ) ;    
     }
+
+    
 }
