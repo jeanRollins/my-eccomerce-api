@@ -36,6 +36,8 @@ export class Categories {
         return nodeCategories ;
     }
 
+
+    
     public async add( name : string, parent : string ) : Promise<ICategory> {
 
         const slug : string = await Commons.generateSlug( name ) ;
@@ -73,6 +75,15 @@ export class Categories {
         }) ;
 
         return  ( productsFounded.length > 0 ) ;
+    }
+
+    public async get( field : string = '', value : string = ''  ){
+
+        const query : object = field === '' && value === '' ? {} : { field : value } ;
+
+        const categories : ICategory [] =  await Category.find( query )  ; 
+        
+        return categories.length === 0 ? [] : categories ;
     }
 
 }

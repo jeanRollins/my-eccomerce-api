@@ -35,12 +35,6 @@ Content-Type: application/json
 
 
 ### START CATEGORY
-POST {{ RUTE_API }}/api/back/category/add
+POST {{ RUTE_API }}/api/back/category/getByfield
 Content-Type: application/json
-
-{
-    "name"  : "Almacenamiento" ,
-    "parent" : "6052b642ac225569e597ccb9"
-}
-
 ### END CATEGORY

@@ -19,8 +19,7 @@ const categorySchema = new Schema({
         required : true 
     },
     parent : {
-        type : String ,
-        required : true 
+        type : String 
     }
 });
 
